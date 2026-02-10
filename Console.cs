@@ -11,13 +11,15 @@ class MainClass
      bool iscorrect = int.TryParse(Console.ReadLine(), out age);
      Console.WriteLine("Your age is {0} ", age);
      */
+     /*
   Console.Write("Enter your name: ");
 string name = Console.ReadLine();
 
 Console.Write("Enter your age: ");
 byte age = (byte)int.Parse(Console.ReadLine());
 
-Console.WriteLine("Your name is {0} and age is {1}", name, age);
+
+Console.WriteLine("Your name is {0} and age is {1} ", name, age );
 Console.WriteLine("{0}, do you have a hobby?", name);
 Console.WriteLine("1 - yes \n2 - no");
 
@@ -37,7 +39,77 @@ else
 {
     Console.WriteLine("Invalid choice!");
 }
+var myapples = 5;
+var hisapples = 6;
+var hispeares = 5;
 
-Console.ReadKey();
+var result = (myapples != hispeares) & (myapples < hisapples); // логические операции
+
+Console.WriteLine(result); // вывод после логической операции
+
+int currenDayInyear = 293;
+bool isLeapYear = false;
+
+bool isWinter=
+!isLeapYear & ( currenDayInyear >= 335 | currenDayInyear <= 59)
+|
+isLeapYear & ( currenDayInyear >= 336 | currenDayInyear <= 60);
+
+ConsoleWriteLine("Current season is winter {0}" , isWinter);
+
+// задание 4.1.4 
+string a;
+string b;
+
+bool c= a != b; // Забыл восклицательный знак
+
+// задание 4.1.5
+int A;
+int B;
+double X;
+double Y;
+
+bool C=
+(A < B) | (X > Y); // не поставил скобки
+*/
+
+// Задание 4.1.17 работа с цветом
+int t = 0;
+do 
+{
+    Console.WriteLine(t);
+
+Console.WriteLine("Напишите свой любимый цвет на английском с маленькой буквы");
+
+		switch (Console.ReadLine()) {
+case "red":
+  Console.BackgroundColor = ConsoleColor.Red;
+  Console.ForegroundColor = ConsoleColor.Black;
+
+  Console.WriteLine("Your color is red!");
+  break;
+
+case "green":
+  Console.BackgroundColor = ConsoleColor.Green;
+  Console.ForegroundColor = ConsoleColor.Black;
+
+  Console.WriteLine("Your color is green!");
+  break;
+case "cyan":
+  Console.BackgroundColor = ConsoleColor.Cyan;
+  Console.ForegroundColor = ConsoleColor.Black;
+
+  Console.WriteLine("Your color is cyan!");
+  break;
+default:
+  Console.BackgroundColor = ConsoleColor.Yellow;
+  Console.ForegroundColor = ConsoleColor.Red;
+
+  Console.WriteLine("Your color is yellow!");
+  break;
+}
+t++;
+}while (t < 3);
+
     }
 }
