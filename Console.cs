@@ -74,6 +74,7 @@ bool C=
 */
 
 // Задание 4.1.17 работа с цветом
+/*
 int t = 0;
 do 
 {
@@ -109,7 +110,49 @@ default:
   break;
 }
 t++;
-}while (t < 3);
+}while (t < 3);*/
 
+/*
+int k = 0;
+
+while (true) 
+{
+  Console.WriteLine("Напишите свой любимый цвет на английском с маленькой буквы");
+  Console.WriteLine(k);
+
+  var text = Console.ReadLine();
+
+  if (text == "stop") 
+  {
+    Console.WriteLine("Цикл остановлен");
+    break;
+  }
+
+
+ k++;
+    }
+*/
+
+    int sum = 0;
+
+      while (true)       {
+        Console.WriteLine("Введите число");
+        var number = Convert.ToInt32(Console.ReadLine());
+
+        if (number < 0)        
+         {
+          continue;
+        }
+
+        else if (number == 0)        
+         {
+          break;
+        }
+
+        // number > 0
+        sum += number;
+      }
+
+      Console.WriteLine("Итоговая сумма: {0}", sum);
     }
 }
