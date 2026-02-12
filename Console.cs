@@ -132,7 +132,7 @@ while (true)
  k++;
     }
 */
-
+/*
     int sum = 0;
 
       while (true)       {
@@ -154,5 +154,29 @@ while (true)
       }
 
       Console.WriteLine("Итоговая сумма: {0}", sum);
+      
+     string[] favcolors = new string[3];
+
+     for(int i = 0; i  < favcolors.Length; i ++)
+        {
+            Console.WriteLine(" Введите номер цвета {0}", i +1);
+            favcolors[i]=Console.ReadLine();
+        }
+        foreach(var color in favcolors)
+        {
+            //switch (color)
+        }
+        */
+       Console.WriteLine("Введите свое имя");
+
+       var name = Console.ReadLine();
+       Console.WriteLine("Ваше имя по буквам:");
+       
+       foreach(var ch in name)
+        {
+         Console.Write(ch + "  ");   
+        }
+        Console.WriteLine("Последняя буква вашего имени:  {0}", name[0]);
+
     }
 }
