@@ -1,9 +1,4 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
-using System.Threading.Tasks.Dataflow;
-
-
 
 class Program
 {
@@ -15,133 +10,118 @@ class Program
         Console.ReadKey();
     }
 
-    // 1. Метод, возвращающий кортеж с данными пользователя
-    static (string FirstName, string LastName, int Age, string[] PetNames, string[] FavoriteColors) GetUserData()
+    // 1. Метод, возвращающий кортеж с данными (теперь с полем hasPet)
+    static (string firstName, string lastName, int age, bool hasPet, string[] petNames, string[] favoriteColors) GetUserData()
     {
-        string firstName = GetValidatedInput(
-            "Введите имя: ",
-            input => IsValidName(input, out string result) ? (true, result) : (false, null)
-        );
+        string firstName = GetValidString("Введите имя: ");
+        string lastName = GetValidString("Введите фамилию: ");
+        int age = GetPositiveInt("Введите возраст: ");
 
-        string lastName = GetValidatedInput(
-            "Введите фамилию: ",
-            input => IsValidName(input, out string result) ? (true, result) : (false, null)
-        );
-
-        int age = GetValidatedInput(
-            "Введите возраст: ",
-            input => IsPositiveInt(input, out int result) ? (true, result) : (false, 0)
-        );
-
-        bool hasPets = GetValidatedInput(
-            "Есть ли у вас питомцы? (Да/Нет): ",
-            input => IsYesNo(input, out bool result) ? (true, result) : (false, false)
-        );
-
-        string[] petNames = Array.Empty<string>();
-        if (hasPets)
+        // Наличие питомца
+        Console.Write("Есть ли у вас питомцы? (да/нет): ");
+        string petAnswer = Console.ReadLine().ToLower();
+        while (petAnswer != "да" && petAnswer != "нет")
         {
-            int petCount = GetValidatedInput(
-                "Сколько у вас питомцев? ",
-                input => IsPositiveInt(input, out int result) ? (true, result) : (false, 0)
-            );
-
-            petNames = new string[petCount];
-            for (int i = 0; i < petCount; i++)
-            {
-                petNames[i] = GetValidatedInput(
-                    $"Введите кличку питомца {i + 1}: ",
-                    input => IsValidName(input, out string result) ? (true, result) : (false, null)
-                );
-            }
+            Console.Write("Некорректный ввод. Введите 'да' или 'нет': ");
+            petAnswer = Console.ReadLine().ToLower();
         }
 
-        int colorCount = GetValidatedInput(
-            "Сколько у вас любимых цветов? ",
-            input => IsPositiveInt(input, out int result) ? (true, result) : (false, 0)
-        );
+        bool hasPet = (petAnswer == "да");
+        string[] petNames = new string[0];
 
-        string[] favoriteColors = new string[colorCount];
-        for (int i = 0; i < colorCount; i++)
+        if (hasPet)
         {
-            favoriteColors[i] = GetValidatedInput(
-                $"Введите любимый цвет {i + 1}: ",
-                input => IsValidName(input, out string result) ? (true, result) : (false, null)
-            );
+            int petCount = GetPositiveInt("Сколько у вас питомцев? ");
+            petNames = GetPetNames(petCount); // вызов отдельного метода
         }
 
-        return (firstName, lastName, age, petNames, favoriteColors);
+        int colorCount = GetPositiveInt("Сколько у вас любимых цветов? ");
+        string[] favoriteColors = GetColorNames(colorCount); // вызов отдельного метода
+
+        return (firstName, lastName, age, hasPet, petNames, favoriteColors);
     }
 
-    // 2. Универсальный метод проверки ввода
-    static T GetValidatedInput<T>(string prompt, Func<string, (bool IsValid, T Value)> validator)
+    // Метод для ввода кличек питомцев
+    static string[] GetPetNames(int count)
     {
-        while (true)
+        string[] names = new string[count];
+        for (int i = 0; i < count; i++)
+        {
+            names[i] = GetValidString($"Введите кличку питомца {i + 1}: ");
+        }
+        return names;
+    }
+
+    // Метод для ввода любимых цветов
+    static string[] GetColorNames(int count)
+    {
+        string[] colors = new string[count];
+        for (int i = 0; i < count; i++)
+        {
+            colors[i] = GetValidString($"Введите любимый цвет {i + 1}: ");
+        }
+        return colors;
+    }
+
+    // --- Методы проверки ввода (те же, что и у вас) ---
+    static int GetPositiveInt(string prompt)
+    {
+        int number;
+        bool isValid;
+        do
         {
             Console.Write(prompt);
-            string input = Console.ReadLine()?.Trim() ?? "";
-            var result = validator(input);
-            if (result.IsValid)
-                return result.Value;
-            Console.WriteLine("Некорректный ввод. Попробуйте снова.");
-        }
+            string input = Console.ReadLine();
+            isValid = int.TryParse(input, out number) && number > 0;
+            if (!isValid)
+                Console.WriteLine("Ошибка! Введите целое положительное число.");
+        } while (!isValid);
+        return number;
     }
 
-    // Вспомогательные методы проверки
-
-    static bool IsValidName(string input, out string result)
+    static string GetValidString(string prompt)
     {
-        result = input;
-        if (string.IsNullOrWhiteSpace(input))
-            return false;
-        // Проверяем, не является ли строка числом
-        if (double.TryParse(input, out _))
-            return false;
+        string input;
+        do
+        {
+            Console.Write(prompt);
+            input = Console.ReadLine().Trim();
+            if (string.IsNullOrEmpty(input))
+                Console.WriteLine("Ошибка! Строка не может быть пустой.");
+            else if (IsAllDigits(input))
+                Console.WriteLine("Ошибка! Имя не должно состоять только из цифр.");
+            else
+                break;
+        } while (true);
+        return input;
+    }
+
+    static bool IsAllDigits(string s)
+    {
+        foreach (char c in s)
+            if (!char.IsDigit(c)) return false;
         return true;
     }
 
-    static bool IsPositiveInt(string input, out int result)
-    {
-        if (int.TryParse(input, out result) && result > 0)
-            return true;
-        result = 0;
-        return false;
-    }
-
-    static bool IsYesNo(string input, out bool result)
-    {
-        string lower = input.ToLower();
-        if (lower == "да" || lower == "yes" || lower == "lf")
-        {
-            result = true;
-            return true;
-        }
-        if (lower == "нет" || lower == "no" || lower == "ytn")
-        {
-            result = false;
-            return true;
-        }
-        result = false;
-        return false;
-    }
-
-    // 3. Метод вывода данных
-    static void PrintUserData((string FirstName, string LastName, int Age, string[] PetNames, string[] FavoriteColors) user)
+    // 3. Метод для вывода данных
+    static void PrintUserData((string firstName, string lastName, int age, bool hasPet, string[] petNames, string[] favoriteColors) user)
     {
         Console.WriteLine("\n--- Данные пользователя ---");
-        Console.WriteLine($"Имя: {user.FirstName}");
-        Console.WriteLine($"Фамилия: {user.LastName}");
-        Console.WriteLine($"Возраст: {user.Age}");
+        Console.WriteLine($"Имя: {user.firstName}");
+        Console.WriteLine($"Фамилия: {user.lastName}");
+        Console.WriteLine($"Возраст: {user.age}");
+        Console.WriteLine($"Наличие питомца: {(user.hasPet ? "Да" : "Нет")}");
 
-        if (user.PetNames.Length > 0)
+        if (user.hasPet)
         {
-            Console.WriteLine("Питомцы: " + string.Join(", ", user.PetNames));
-        }
-        else
-        {
-            Console.WriteLine("Питомцев нет");
+            Console.WriteLine("Питомцы:");
+            for (int i = 0; i < user.petNames.Length; i++)
+                Console.WriteLine($"  {i + 1}. {user.petNames[i]}");
         }
 
-        Console.WriteLine("Любимые цвета: " + string.Join(", ", user.FavoriteColors));
+        Console.WriteLine("Любимые цвета:");
+        for (int i = 0; i < user.favoriteColors.Length; i++)
+            Console.WriteLine($"  {i + 1}. {user.favoriteColors[i]}");
     }
 }
+
