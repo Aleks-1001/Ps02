@@ -6,6 +6,31 @@ using System.Threading.Tasks.Dataflow;
 
 using System;
 
+class Food{}
+class Fruit : Food{}
+class Vegetable :Food{}
+    class Aple :Food{}
+    class Banana : Fruit{}
+    class Pear : Fruit{}
+    class Potato : Vegetable{}
+    class Carrot :Vegetable{}
+
+
+class Employee
+{
+    public string Name;
+    public int Age;
+    public int Salary;
+
+}
+class ProjectManager : Employee
+{
+    public string ProjectName;
+}
+class Developer : Employee
+{
+private string ProgrammingLanguage;
+}
 class User
 {
     private int age;
@@ -115,6 +140,7 @@ class MainClass
         User user = new User();
         user.Age = age;
         user.Email = email;
+    
 
         Console.WriteLine($"Имя: {name}");
         Console.WriteLine($"Возраст: {user.Age}");
