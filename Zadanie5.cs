@@ -10,7 +10,7 @@ class Program
         Console.ReadKey();
     }
 
-    // 1. Метод, возвращающий кортеж с данными (теперь с полем hasPet)
+    // 1. Метод, возвращающий кортеж с данными
     static (string firstName, string lastName, int age, bool hasPet, string[] petNames, string[] favoriteColors) GetUserData()
     {
         string firstName = GetValidString("Введите имя: ");
@@ -32,11 +32,11 @@ class Program
         if (hasPet)
         {
             int petCount = GetPositiveInt("Сколько у вас питомцев? ");
-            petNames = GetPetNames(petCount); // вызов отдельного метода
+            petNames = GetPetNames(petCount);
         }
 
         int colorCount = GetPositiveInt("Сколько у вас любимых цветов? ");
-        string[] favoriteColors = GetColorNames(colorCount); // вызов отдельного метода
+        string[] favoriteColors = GetColorNames(colorCount);
 
         return (firstName, lastName, age, hasPet, petNames, favoriteColors);
     }
@@ -63,7 +63,7 @@ class Program
         return colors;
     }
 
-    // --- Методы проверки ввода (те же, что и у вас) ---
+    // Методы проверки ввода 
     static int GetPositiveInt(string prompt)
     {
         int number;
