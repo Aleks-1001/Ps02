@@ -155,6 +155,7 @@ class MainClass
    Console.Write("Enter your age: ");
    byte age = (byte)int.Parse(Console.ReadLine());
 
+using System;
 
    Console.WriteLine("Your name is {0} and age is {1} ", name, age );
    Console.WriteLine("{0}, do you have a hobby?", name);
